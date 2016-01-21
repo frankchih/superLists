@@ -42,6 +42,7 @@ class NewVisitorTest(LiveServerTestCase):
         inputBox.send_keys(Keys.ENTER)
         
         toniListURL = self.browser.current_url
+
         self.assertRegex(toniListURL, '/lists/.+')
         self.check_for_row_in_listTable('買孔雀羽毛')
         
@@ -80,3 +81,17 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotIn('買孔雀羽毛', pageText)
         self.assertIn('買鮮奶', pageText)
         # 兩個人都很滿意，就都上床睡覺了
+        
+    '''    
+    def test_layout_and_styling(self):
+        # 彤彤前往首頁
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+        
+        # 她注意到輸入框是置中對齊的
+        inputbox = self.browser.find_element_by_id('newItem')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width']/2,
+            512, delta=5
+        )
+    '''    
