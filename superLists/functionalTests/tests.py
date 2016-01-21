@@ -1,10 +1,9 @@
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from django.test import LiveServerTestCase
 
-
-
-class NewVisitorTest(LiveServerTestCase):
+class FunctionalTest(StaticLiveServerTestCase):
     
     def setUp(self):
         profile = webdriver.FirefoxProfile()
@@ -22,6 +21,7 @@ class NewVisitorTest(LiveServerTestCase):
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(rowText, [row.text for row in rows])
         
+class NewVisitorTest(FunctionalTest):
     def test_can_start_a_list_and_retrieve_it_later(self):
         # 彤彤聽說有一款很酷的待辦事項應用程式，她前往它的首頁
         self.browser.get(self.live_server_url)
@@ -82,7 +82,8 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('買鮮奶', pageText)
         # 兩個人都很滿意，就都上床睡覺了
         
-    '''    
+class LayoutStylingTest(FunctionalTest):
+
     def test_layout_and_styling(self):
         # 彤彤前往首頁
         self.browser.get(self.live_server_url)
@@ -94,4 +95,22 @@ class NewVisitorTest(LiveServerTestCase):
             inputbox.location['x'] + inputbox.size['width']/2,
             512, delta=5
         )
-    '''    
+        
+        
+class ItemValidationTest(FunctionalTest):
+
+    def test_cannot_add_empty_list_items(self):
+        # 彤彤前往首頁，一不小心按下ENTER鍵，送出了一個空的項目
+        
+        # 頁面更新，出現一個錯誤訊息：項目不能空白
+        
+        # 她再試一次，輸入文字，這次運作良好
+        
+        # 她頑皮地又輸入了一次空白項目
+        
+        # 她還是看到了同樣的錯誤訊息
+        
+        # 她可以輸入文字來更正錯誤
+        self.fail('填資料吧!')
+
+        
