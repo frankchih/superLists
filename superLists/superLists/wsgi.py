@@ -13,4 +13,11 @@ from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "superLists.settings")
 
-application = get_wsgi_application()
+from django.core.wsgi import get_wsgi_application
+
+if 'DYNO' in os.environ:     # For Heroku
+    from dj_static import Cling  
+    application = Cling(get_wsgi_application())
+else:
+    application = get_wsgi_application()
+
