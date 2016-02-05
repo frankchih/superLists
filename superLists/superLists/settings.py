@@ -24,6 +24,8 @@ SECRET_KEY = 'rb*0+uy)(@@^drdc3r8o2o3(zhjyn&wg3(++zvcmfcx(a6kjjw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+if 'DYNO' in os.environ:    # Running on Heroku
+    DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -74,17 +76,23 @@ WSGI_APPLICATION = 'superLists.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': 'superListsDB',
-         'USER': 'superLists',
-         'PASSWORD': 'superLists',
-         'HOST': 'localhost',
-         'PORT': '',
+if DEBUG==True:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'superListsDB',
+            'USER': 'superLists',
+            'PASSWORD': 'superLists',
+            'HOST': 'localhost',
+            'PORT': '',
+        }   
     }
-}
+else: # for heroku 
+    # Parse database configuration from $DATABASE_URL
+    import dj_database_url
+    DATABASES = {'default':dj_database_url.config()}
+    # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 # Password validation
@@ -124,3 +132,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+if DEBUG==False:     # Running on Heroku
+    STATIC_ROOT = 'staticfiles'     # Static asset configuration
