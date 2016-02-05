@@ -17,8 +17,10 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "superLists.settings")
 if 'DYNO' in os.environ:     # For Heroku
     from dj_static import Cling  
     application = Cling(get_wsgi_application())
+    '''
     import newrelic.agent
     newrelic.agent.initialize('newrelic.ini')
+    '''
 else:
     application = get_wsgi_application()
 
