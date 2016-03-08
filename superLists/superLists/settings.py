@@ -134,3 +134,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # Running on Heroku
 STATIC_ROOT = 'staticfiles'     # Static asset configuration
+
+DEBUG = True
